@@ -1,0 +1,12 @@
+{
+  "name": "arede",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Arede online store: one command builds the website and installs the server",
+  "scripts": {
+    "build": "npm --prefix client ci && npm --prefix client run build && npm --prefix server ci --omit=dev",
+    "start": "npm --prefix server start",
+    "setup-db": "npm --prefix server run db:setup"
+  },
+  "engines": { "node": ">=20.19" }
+}

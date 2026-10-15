@@ -1,0 +1,22 @@
+.pcard { display: flex; flex-direction: column; background: var(--white); border: 1px solid var(--line); border-radius: var(--radius-m); overflow: hidden; transition: box-shadow 0.2s, border-color 0.2s; }
+.pcard:hover { border-color: var(--gold-400); box-shadow: var(--shadow-md); }
+.pcard__media { position: relative; display: block; aspect-ratio: 4 / 5; overflow: hidden; }
+.pcard__media .pimg img { transition: transform 0.5s ease; }
+.pcard:hover .pcard__media .pimg img { transform: scale(1.04); }
+.pcard__badge {
+  position: absolute; top: 12px; left: 12px; padding: 4px 12px; border-radius: 999px;
+  background: var(--gold-grad); color: var(--green-950); font-size: 0.78rem; font-weight: 700;
+}
+.pcard__badge--out { background: var(--green-950); color: #fff; }
+.pcard__body { display: flex; flex-direction: column; gap: 6px; padding: 16px 16px 14px; flex: 1; }
+.pcard__cat { font-size: 0.82rem; color: var(--gold-700); font-weight: 600; }
+.pcard__name { font-family: var(--font-body); font-size: 1rem; font-weight: 600; line-height: 1.35; letter-spacing: 0; color: var(--ink); }
+.pcard__name a { text-decoration: none; }
+.pcard__name a:hover { color: var(--green-700); }
+.pcard__foot { margin-top: auto; padding-top: 8px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.pcard__add {
+  flex: none; width: 42px; height: 42px; display: grid; place-items: center;
+  border-radius: 50%; background: var(--green-800); color: #fff; border: 0; transition: background 0.18s, transform 0.18s;
+}
+.pcard__add:hover:not(:disabled) { background: var(--gold-500); color: var(--green-950); transform: rotate(90deg); }
+.pcard__add:disabled { background: var(--line); color: var(--ink-soft); cursor: not-allowed; }

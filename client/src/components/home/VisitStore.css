@@ -1,0 +1,21 @@
+.visit {
+  display: grid; grid-template-columns: 1.3fr 1fr; overflow: hidden;
+  background: var(--white); border: 1px solid var(--line); border-radius: var(--radius-l);
+}
+.visit__main { padding: clamp(28px, 5vw, 56px); display: grid; gap: 20px; align-content: start; }
+.visit__addr { font-family: var(--font-display); font-size: clamp(1.4rem, 2.6vw, 2rem); line-height: 1.3; color: var(--green-800); }
+.visit__cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 4px; }
+.visit__side {
+  padding: clamp(28px, 5vw, 56px); display: grid; gap: 18px; align-content: center;
+  background: linear-gradient(165deg, var(--green-800), var(--green-950)); color: #fff;
+}
+.visit__side h3 { display: flex; align-items: center; gap: 10px; color: var(--gold-300); font-family: var(--font-body); font-size: 1.05rem; font-weight: 700; letter-spacing: 0; }
+.visit__side dl { margin: 0; display: grid; gap: 14px; }
+.visit__side dl div { display: grid; gap: 2px; padding-bottom: 14px; border-bottom: 1px solid rgba(217, 185, 87, 0.35); }
+.visit__side dt { color: rgba(255, 255, 255, 0.7); font-size: 0.92rem; }
+.visit__side dd { margin: 0; font-family: var(--font-display); font-size: 1.3rem; }
+.visit__phone { display: flex; align-items: center; gap: 10px; color: var(--gold-300); }
+.visit__phone a { color: #fff; font-weight: 600; text-decoration: none; }
+@media (max-width: 800px) { .visit { grid-template-columns: 1fr; } }
+
+.visit__lead { margin: .5rem 0 1.25rem; max-width: 34ch; line-height: 1.55; opacity: .85; }

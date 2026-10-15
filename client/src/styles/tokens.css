@@ -1,0 +1,40 @@
+:root {
+  /* Brand greens, taken from the flyer */
+  --green-950: #0a2419;
+  --green-900: #0f3326;
+  --green-800: #1b4b37; /* brand green */
+  --green-700: #25644a;
+  --green-200: #c5dbcf;
+  --green-100: #e2eee7;
+  --green-50: #f0f6f2;
+
+  /* Gold */
+  --gold-300: #ecd48a;
+  --gold-400: #d9b957;
+  --gold-500: #c09a37;
+  --gold-700: #85661b; /* gold dark enough to read on light backgrounds */
+  --gold-grad: linear-gradient(135deg, #f3de98 0%, #d4af4b 42%, #a8832a 100%);
+
+  --paper: #f7f9f6;
+  --white: #ffffff;
+  --ink: #12201a;
+  --ink-soft: #4b5b53;
+  --line: #dbe4de;
+  --danger: #b3382d;
+
+  --font-display: 'Bodoni Moda', 'Didot', 'Playfair Display', Georgia, serif;
+  --font-body: 'Figtree Variable', 'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --radius-s: 6px;
+  --radius-m: 12px;
+  --radius-l: 20px;
+  --arch: 999px 999px 0 0;
+
+  --shadow-sm: 0 1px 2px rgba(10, 36, 25, 0.06), 0 2px 8px rgba(10, 36, 25, 0.05);
+  --shadow-md: 0 8px 24px rgba(10, 36, 25, 0.1);
+  --shadow-lg: 0 18px 48px rgba(10, 36, 25, 0.22);
+
+  --container: 1240px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --header-h: 76px;
+}

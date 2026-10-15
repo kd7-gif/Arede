@@ -1,0 +1,43 @@
+.hero {
+  position: relative; overflow: hidden; color: #fff;
+  background:
+    radial-gradient(70% 90% at 78% 40%, rgba(37, 100, 74, 0.75) 0%, transparent 62%),
+    linear-gradient(165deg, var(--green-800) 0%, var(--green-950) 100%);
+}
+.hero__grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(32px, 6vw, 88px); align-items: center; padding-block: clamp(48px, 8vw, 96px) clamp(64px, 9vw, 112px); }
+
+.hero h1 { color: #fff; font-size: clamp(3.3rem, 8vw, 6.6rem); font-weight: 600; line-height: 1; letter-spacing: -0.02em; }
+.hero__line { display: block; overflow: hidden; padding-bottom: 0.08em; }
+.hero__line > span { display: block; animation: rise 0.9s cubic-bezier(0.2, 0.75, 0.2, 1) both; }
+.hero__line:nth-child(2) > span { animation-delay: 0.14s; }
+
+.hero__lead { margin-top: 28px; max-width: 46ch; font-size: 1.15rem; line-height: 1.65; color: rgba(255, 255, 255, 0.82); animation: fade-up 0.8s 0.4s both; }
+.hero__cta { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 36px; animation: fade-up 0.8s 0.55s both; }
+
+.hero__art { position: relative; justify-self: center; width: min(100%, 440px); }
+.hero__frame {
+  position: absolute; inset: 0; translate: 18px 18px;
+  border: 1.5px solid var(--gold-400); border-radius: var(--arch);
+  animation: fade-up 0.9s 0.5s both;
+}
+.hero__arch {
+  position: relative; aspect-ratio: 400 / 520; border-radius: var(--arch); overflow: hidden; color: var(--gold-400);
+  background:
+    radial-gradient(90% 60% at 50% 18%, rgba(255, 255, 255, 0.12), transparent 70%),
+    linear-gradient(180deg, #2c7254 0%, #123c2b 100%);
+  box-shadow: var(--shadow-lg);
+  animation: arch-in 1.1s cubic-bezier(0.2, 0.75, 0.2, 1) 0.1s both;
+}
+.hero__arch img { width: 100%; height: 100%; object-fit: cover; }
+.hero__art-svg { width: 100%; height: 100%; filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.35)); }
+.hero__seal { position: absolute; width: 132px; height: 132px; left: -34px; bottom: 40px; filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.35)); animation: fade-up 0.8s 0.9s both; }
+
+@keyframes rise { from { transform: translateY(105%); } to { transform: none; } }
+@keyframes fade-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes arch-in { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+@media (max-width: 860px) {
+  .hero__grid { grid-template-columns: 1fr; }
+  .hero__art { width: min(78%, 360px); margin-bottom: 20px; }
+  .hero__seal { width: 108px; height: 108px; left: -22px; }
+}

@@ -1,0 +1,25 @@
+.logo { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo__img { height: 48px; width: auto; }
+.logo__crown { width: 38px; min-width: 38px; flex-shrink: 0; height: auto; color: var(--green-800); }
+.logo--light .logo__crown { color: var(--gold-400); }
+.logo__text { display: grid; line-height: 1; }
+.logo__word {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.7rem;
+  letter-spacing: 0.02em;
+  padding-top: 0.3em; margin-top: -0.3em; /* room for the accents when the text is gold-filled */
+  background: var(--gold-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.logo--dark .logo__word { background: none; color: var(--green-800); }
+.logo__tag {
+  margin-top: 5px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--gold-700);
+}
+.logo--light .logo__tag { color: var(--gold-300); }

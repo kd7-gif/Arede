@@ -1,0 +1,6 @@
+.announce { background: var(--green-950); color: var(--gold-300); font-size: 0.86rem; }
+.announce__inner { display: flex; justify-content: center; gap: 20px; padding-block: 9px; flex-wrap: wrap; text-align: center; }
+.announce a { color: #fff; text-decoration: underline; text-decoration-color: var(--gold-400); text-underline-offset: 3px; }
+.announce__contact { display: inline-flex; gap: 20px; }
+@media (max-width: 900px) { .announce__contact { display: none; } }
+@media (max-width: 560px) { .announce a { display: none; } }

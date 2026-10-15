@@ -1,0 +1,3 @@
+.shead { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: clamp(24px, 4vw, 44px); flex-wrap: wrap; }
+.shead__rule { display: block; width: 64px; height: 3px; margin: 16px 0 0; background: var(--gold-grad); border-radius: 2px; }
+.shead p { margin-top: 14px; color: var(--ink-soft); max-width: 52ch; }

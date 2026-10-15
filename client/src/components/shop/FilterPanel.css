@@ -1,0 +1,9 @@
+.filters { display: grid; gap: 28px; }
+.filters fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 4px; }
+.filters legend { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; color: var(--green-900); padding: 0; margin-bottom: 10px; }
+.filters__opt { display: flex; align-items: center; gap: 10px; padding: 6px 0; cursor: pointer; }
+.filters__opt input { width: 18px; height: 18px; accent-color: var(--green-800); margin: 0; }
+.filters__opt span { flex: 1; }
+.filters__opt small { color: var(--ink-soft); }
+.filters__opt:hover span { color: var(--green-700); }
+.filters__clear { justify-self: start; background: none; border: 0; padding: 0; color: var(--green-800); font-weight: 600; text-decoration: underline; text-decoration-color: var(--gold-400); text-underline-offset: 4px; }

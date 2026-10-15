@@ -1,0 +1,7 @@
+.wa {
+  position: fixed; right: 20px; bottom: 20px; z-index: 50;
+  display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%;
+  background: var(--green-800); color: var(--gold-300); border: 2px solid var(--gold-400);
+  box-shadow: var(--shadow-lg); transition: transform 0.18s, background 0.18s;
+}
+.wa:hover { transform: scale(1.06); background: var(--green-900); }

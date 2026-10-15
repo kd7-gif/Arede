@@ -1,0 +1,16 @@
+.promise { background: var(--green-100); }
+.promise__row { display: grid; grid-template-columns: repeat(4, 1fr); padding-block: 48px; }
+.promise__row li { display: flex; gap: 16px; align-items: flex-start; padding: 4px 28px; color: var(--green-800); }
+.promise__row li + li { border-left: 1px solid var(--gold-400); }
+.promise__row li:first-child { padding-left: 0; }
+.promise__row h3 { font-family: var(--font-body); font-size: 1.02rem; font-weight: 700; letter-spacing: 0; color: var(--green-900); }
+.promise__row p { margin-top: 4px; font-size: 0.93rem; color: var(--ink-soft); }
+.promise__row svg { flex: none; margin-top: 2px; }
+@media (max-width: 1000px) {
+  .promise__row { grid-template-columns: 1fr 1fr; gap: 28px 0; }
+  .promise__row li:nth-child(odd) { padding-left: 0; border-left: 0; }
+}
+@media (max-width: 560px) {
+  .promise__row { grid-template-columns: 1fr; }
+  .promise__row li, .promise__row li + li { padding: 0; border: 0; }
+}

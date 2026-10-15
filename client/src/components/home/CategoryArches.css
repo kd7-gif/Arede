@@ -1,0 +1,12 @@
+.arches { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: clamp(14px, 2vw, 28px); }
+@media (max-width: 1000px) { .arches { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .arches { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.arch { display: grid; gap: 4px; text-align: center; text-decoration: none; }
+.arch__shape { aspect-ratio: 3 / 4; border-radius: var(--arch); overflow: hidden; margin-bottom: 12px; outline: 1.5px solid transparent; outline-offset: 5px; transition: outline-color 0.2s, outline-offset 0.2s; }
+.arch__shape .pimg::after { border-radius: var(--arch); }
+.arch:hover .arch__shape, .arch:focus-visible .arch__shape { outline-color: var(--gold-500); outline-offset: 7px; }
+.arch__name { font-family: var(--font-display); font-weight: 600; font-size: 1.2rem; color: var(--green-900); }
+.arch__count { font-size: 0.86rem; color: var(--ink-soft); }
+
+.arches__ghost { aspect-ratio: 3 / 4.6; border-radius: var(--arch); background: var(--green-100); }

@@ -1,0 +1,5 @@
+.qty { display: inline-flex; align-items: center; border: 1.5px solid var(--line); border-radius: 999px; background: var(--white); }
+.qty button { width: 38px; height: 38px; display: grid; place-items: center; background: none; border: 0; border-radius: 50%; color: var(--green-800); }
+.qty button:hover:not(:disabled) { background: var(--green-50); }
+.qty button:disabled { opacity: 0.35; cursor: not-allowed; }
+.qty output { min-width: 32px; text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; }

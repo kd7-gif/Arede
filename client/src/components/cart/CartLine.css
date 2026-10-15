@@ -1,0 +1,10 @@
+.cline { display: grid; grid-template-columns: 84px 1fr auto; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--line); align-items: start; }
+.cline__img { display: block; width: 84px; height: 84px; border-radius: var(--radius-s); overflow: hidden; }
+.cline__main { display: grid; gap: 4px; min-width: 0; }
+.cline__name { font-weight: 600; text-decoration: none; line-height: 1.3; }
+.cline__name:hover { color: var(--green-700); }
+.cline__unit { color: var(--ink-soft); font-size: 0.88rem; }
+.cline__controls { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.cline__remove { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: none; border: 0; color: var(--ink-soft); }
+.cline__remove:hover { background: #fbeceb; color: var(--danger); }
+.cline__total { font-family: var(--font-display); font-size: 1.05rem; color: var(--green-900); white-space: nowrap; }

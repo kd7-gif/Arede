@@ -1,0 +1,5 @@
+.price { display: inline-flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.price__now { font-family: var(--font-display); font-weight: 700; color: var(--green-900); font-size: 1.15rem; font-variant-numeric: lining-nums; }
+.price__was { color: var(--ink-soft); font-size: 0.9rem; }
+.price--lg .price__now { font-size: 2rem; }
+.price--lg .price__was { font-size: 1.05rem; }
