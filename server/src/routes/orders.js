@@ -24,6 +24,9 @@ router.post(
   '/',
   createLimiter,
   asyncHandler(async (req, res) => {
+    if (!config.paymentsOpen && req.user.role !== 'admin') {
+      throw new HttpError(503, 'Online payments are coming soon. Please message us on WhatsApp to place your order.');
+    }
     const body = req.body || {};
     const deliveryMethod = body.deliveryMethod === 'pickup' ? 'pickup' : 'delivery';
     const name = cleanString(body.name, 120);

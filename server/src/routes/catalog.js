@@ -21,6 +21,7 @@ router.get('/settings', (_req, res) => {
   res.json({
     deliveryFee: config.deliveryFee,
     holdMinutes: config.unpaidHoldMinutes,
+    paymentsOpen: config.paymentsOpen,
   });
 });
 

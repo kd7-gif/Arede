@@ -24,6 +24,9 @@ export const config = {
     password: process.env.DB_PASSWORD ?? process.env.MYSQLPASSWORD ?? '',
     database: process.env.DB_NAME || process.env.MYSQLDATABASE || 'arede',
   },
+  // Customers can only check out once a live Paystack key is in place (or PAYMENTS_OPEN=true).
+  // Until then the checkout shows "payments coming soon". Admin accounts can still test.
+  paymentsOpen: (process.env.PAYSTACK_SECRET_KEY || '').startsWith('sk_live_') || process.env.PAYMENTS_OPEN === 'true',
   paystack: {
     secretKey: process.env.PAYSTACK_SECRET_KEY || '',
     baseUrl: process.env.PAYSTACK_BASE_URL || 'https://api.paystack.co',

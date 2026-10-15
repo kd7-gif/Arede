@@ -10,11 +10,12 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { api } from '../api/client.js';
 import { useApi } from '../utils/useApi.js';
 import { formatNaira } from '../utils/format.js';
+import { whatsappLink } from '../config.js';
 import './Cart.css';
 
 export default function Checkout() {
   const { items, subtotal, clear } = useCart();
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const navigate = useNavigate();
   const { data: settings } = useApi(() => api('/settings'), []);
 
@@ -40,6 +41,7 @@ export default function Checkout() {
     );
   }
 
+  const paymentsClosed = settings && settings.paymentsOpen === false && !isAdmin;
   const deliveryFee = form.deliveryMethod === 'pickup' ? 0 : settings ? settings.deliveryFee : null;
 
   const submit = async (e) => {
@@ -105,6 +107,12 @@ export default function Checkout() {
 
           <section className="checkout__block">
             <h2>Payment</h2>
+            {paymentsClosed && (
+              <p className="alert alert--info" role="status">
+                <strong>Online payments are coming soon.</strong> We are finishing setting up card payments.
+                Until then, <a className="text-link" href={whatsappLink('Hello Arede, I would like to place an order.')} target="_blank" rel="noreferrer">message us on WhatsApp</a> to order.
+              </p>
+            )}
             <p className="checkout__pay">
               <Icon name="shield" size={20} />
               <span>
@@ -126,7 +134,7 @@ export default function Checkout() {
             </ul>
           }
         >
-          <Button type="submit" variant="gold" size="lg" block disabled={submitting}>
+          <Button type="submit" variant="gold" size="lg" block disabled={submitting || paymentsClosed}>
             {submitting ? 'Taking you to Paystack...' : deliveryFee === null ? 'Pay with Paystack' : `Pay ${formatNaira(subtotal + deliveryFee)} with Paystack`}
           </Button>
           <p className="cartpage__note">
