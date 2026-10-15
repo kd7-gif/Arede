@@ -24,9 +24,9 @@ export const store = {
     { days: 'Sunday', time: '1:00pm to 6:00pm' },
   ],
 
-  phoneDisplay: '0706 523 0243',
-  phoneTel: '+2347065230243',
-  whatsapp: '2347065230243', // international format, no plus sign
+  phoneDisplay: '0706 523 0403',
+  phoneTel: '+2347065230403',
+  whatsapp: '2347065230403', // international format, no plus sign
   instagram: 'arede_homes',
   tiktok: 'arede.homes',
   email: 'aredenig@gmail.com',
