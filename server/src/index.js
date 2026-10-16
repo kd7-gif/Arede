@@ -37,6 +37,20 @@ if (!config.paystack.secretKey) {
 const app = express();
 if (config.trustProxy) app.set('trust proxy', 1);
 
+// Send www.<domain> visitors to the main address so logins and carts are not split between two sites.
+// Only plain page loads are redirected (GET/HEAD), never form posts or the Paystack webhook.
+try {
+  const mainHost = new URL(config.publicUrl).hostname;
+  if (mainHost && !mainHost.startsWith('www.') && !['localhost', '127.0.0.1'].includes(mainHost)) {
+    app.use((req, res, next) => {
+      if ((req.method === 'GET' || req.method === 'HEAD') && req.hostname === `www.${mainHost}`) {
+        return res.redirect(301, `${config.publicUrl}${req.originalUrl}`);
+      }
+      next();
+    });
+  }
+} catch { /* PUBLIC_URL is not a valid address, so skip the redirect */ }
+
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 app.use(cors({ origin: config.clientOrigins, credentials: true }));
 
