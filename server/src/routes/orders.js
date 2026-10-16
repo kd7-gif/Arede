@@ -33,6 +33,7 @@ router.post(
     const phone = cleanString(body.phone, 30);
     const address = cleanString(body.address, 255);
     const city = cleanString(body.city, 80);
+    const deliveryArea = body.deliveryArea === 'ibadan' ? 'ibadan' : 'outside';
     const note = cleanString(body.note, 500);
 
     const fields = {};
@@ -81,7 +82,10 @@ router.post(
 
       // Prices always come from the database, never from the browser.
       const subtotal = lines.reduce((s, l) => s + l.total, 0);
-      const deliveryFee = deliveryMethod === 'delivery' ? config.deliveryFee : 0; // flat fee on every delivery, pickup is free
+      // The server sets the fee from the delivery area. Pickup is free.
+      const deliveryFee = deliveryMethod === 'delivery'
+        ? (deliveryArea === 'ibadan' ? config.deliveryFeeIbadan : config.deliveryFeeOutside)
+        : 0;
       const total = subtotal + deliveryFee;
 
       const [result] = await conn.query(

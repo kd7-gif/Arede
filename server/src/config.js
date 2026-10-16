@@ -32,7 +32,9 @@ export const config = {
     baseUrl: process.env.PAYSTACK_BASE_URL || 'https://api.paystack.co',
   },
   // Flat delivery fee in naira, charged on every delivered order whatever its size. Pickup is free.
-  deliveryFee: Number(process.env.DELIVERY_FEE ?? 3500),
+  // Delivery within Ibadan and to everywhere else in Nigeria are priced separately.
+  deliveryFeeIbadan: Number(process.env.DELIVERY_FEE_IBADAN ?? 3000),
+  deliveryFeeOutside: Number(process.env.DELIVERY_FEE_OUTSIDE ?? 4000),
   // How long unpaid orders keep their items reserved before being cancelled.
   unpaidHoldMinutes: Number(process.env.UNPAID_HOLD_MINUTES || 30),
 };

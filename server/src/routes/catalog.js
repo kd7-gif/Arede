@@ -19,7 +19,8 @@ const PRODUCT_COLUMNS = `
 // Public store settings the checkout page needs (delivery pricing and how long unpaid orders are held).
 router.get('/settings', (_req, res) => {
   res.json({
-    deliveryFee: config.deliveryFee,
+    deliveryFeeIbadan: config.deliveryFeeIbadan,
+    deliveryFeeOutside: config.deliveryFeeOutside,
     holdMinutes: config.unpaidHoldMinutes,
     paymentsOpen: config.paymentsOpen,
   });

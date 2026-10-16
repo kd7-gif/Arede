@@ -26,6 +26,7 @@ export default function Checkout() {
     city: user.city || '',
     note: '',
     deliveryMethod: 'delivery',
+    deliveryArea: 'ibadan',
   });
   const [errors, setErrors] = useState({});
   const [formError, setFormError] = useState('');
@@ -42,7 +43,11 @@ export default function Checkout() {
   }
 
   const paymentsClosed = settings && settings.paymentsOpen === false && !isAdmin;
-  const deliveryFee = form.deliveryMethod === 'pickup' ? 0 : settings ? settings.deliveryFee : null;
+  const deliveryFee = form.deliveryMethod === 'pickup'
+    ? 0
+    : settings
+      ? (form.deliveryArea === 'ibadan' ? settings.deliveryFeeIbadan : settings.deliveryFeeOutside)
+      : null;
 
   const submit = async (e) => {
     e.preventDefault();
@@ -81,7 +86,7 @@ export default function Checkout() {
             <div className="choice" role="radiogroup" aria-label="Delivery method">
               <label className="choice__opt">
                 <input type="radio" name="dm" checked={form.deliveryMethod === 'delivery'} onChange={() => setForm((f) => ({ ...f, deliveryMethod: 'delivery' }))} />
-                <div><strong>Delivery</strong><span>Nationwide delivery to your address{settings ? `, ${formatNaira(settings.deliveryFee)} flat fee` : ''}.</span></div>
+                <div><strong>Delivery</strong><span>Nationwide delivery to your address{settings ? `. ${formatNaira(settings.deliveryFeeIbadan)} within Ibadan, ${formatNaira(settings.deliveryFeeOutside)} outside Ibadan` : ''}.</span></div>
               </label>
               <label className="choice__opt">
                 <input type="radio" name="dm" checked={form.deliveryMethod === 'pickup'} onChange={() => setForm((f) => ({ ...f, deliveryMethod: 'pickup' }))} />
@@ -98,6 +103,16 @@ export default function Checkout() {
             </div>
             {form.deliveryMethod === 'delivery' && (
               <>
+                <div className="choice" role="radiogroup" aria-label="Delivery area">
+                  <label className="choice__opt">
+                    <input type="radio" name="area" checked={form.deliveryArea === 'ibadan'} onChange={() => setForm((f) => ({ ...f, deliveryArea: 'ibadan' }))} />
+                    <div><strong>Within Ibadan</strong>{settings && <span>{formatNaira(settings.deliveryFeeIbadan)}</span>}</div>
+                  </label>
+                  <label className="choice__opt">
+                    <input type="radio" name="area" checked={form.deliveryArea === 'outside'} onChange={() => setForm((f) => ({ ...f, deliveryArea: 'outside' }))} />
+                    <div><strong>Outside Ibadan</strong>{settings && <span>{formatNaira(settings.deliveryFeeOutside)}</span>}</div>
+                  </label>
+                </div>
                 <Field label="Delivery address" value={form.address} onChange={set('address')} error={errors.address} autoComplete="street-address" />
                 <Field label="City" value={form.city} onChange={set('city')} error={errors.city} autoComplete="address-level2" />
               </>
