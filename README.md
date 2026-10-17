@@ -92,7 +92,7 @@ npm install
 npm run dev                # site on http://localhost:5173
 ```
 
-Log in with the admin details from your `.env`, then open `/admin`. To test payments, put a Paystack **test** secret key in `PAYSTACK_SECRET_KEY`.
+Log in with the admin details from your `.env`, then open `/admin`. The full setup guide, including bulk product import and going live with Paystack, is in [docs/SETUP.md](docs/SETUP.md). To test payments, put a Paystack **test** secret key in `PAYSTACK_SECRET_KEY`.
 
 ## Deployment
 
