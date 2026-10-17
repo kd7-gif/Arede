@@ -1,108 +1,103 @@
-# Arede online store
+# Arede Homes
 
-A home and appliances store for Arede (Westmead Mall, Samonda, Ibadan).
+A full-stack online store for a home and kitchen appliances business in Ibadan, Nigeria. Customers browse products, create accounts, pay through Paystack and track their orders. The owner runs everything from a built-in admin panel.
 
-- **Front end:** React (Vite) with React Router
-- **Back end:** Node and Express
-- **Database:** MySQL (MariaDB 10.5+ also works)
-- Visitors can browse products and prices and fill a bag without an account. **Placing an order needs an account.**
-- A built-in admin panel at `/admin` lets you add products, set prices, upload photos and manage orders.
+**Live demo:** [arede-production.up.railway.app](https://arede-production.up.railway.app)
+
+Built end to end by me: design, front end, API, database, payments, deployment and domain setup.
+
+## What it does
+
+**For customers**
+- Browse the catalogue with category filters, search, price and stock filters and sorting, with product pages and a shopping bag that works without an account
+- Register and log in, then check out with delivery or store pickup
+- Delivery priced by area (within Ibadan or outside it), set on the server
+- Pay through Paystack, then see the order status and history
+- Order page with a pre-filled WhatsApp message to the shop
+
+**For the owner (admin panel)**
+- Dashboard with order and stock figures, including a low stock count
+- Add, edit and remove products, set prices and upload photos
+- Move orders through Awaiting payment, Paid, Out for delivery or Ready for pickup, and Completed
+- Cancelling an order puts its items back in stock; refunds due are flagged
+- Email notification to the shop whenever an order is paid
+- Bulk product import from a CSV spreadsheet with a dry-run check
+
+## Stack
+
+| Layer | Technology |
+| --- | --- |
+| Front end | React 18, React Router, Vite |
+| Back end | Node.js, Express (ES modules) |
+| Database | MySQL |
+| Payments | Paystack (initialize, verify and webhook) |
+| Email | Nodemailer over SMTP |
+| Hosting | Railway (app, database and a persistent volume for uploads) |
+
+## How it fits together
+
+```
+Browser (React)  ──/api──▶  Express API  ──▶  MySQL
+                                 │
+                                 ├──▶ Paystack (payment page, verification, webhook)
+                                 └──▶ SMTP (order emails)
+```
+
+In production Express serves the built React app and the API from one domain, so sessions are a single same-site cookie and there are no cross-origin problems.
+
+The API is organised by area: `auth`, `catalog` (products, categories, settings), `orders`, `payments` and `admin`. The React app holds no prices or stock of its own, it asks the API for everything.
+
+## The order flow
+
+1. The customer checks out. The browser sends only product IDs, quantities and address details.
+2. The server re-reads the real prices and stock from MySQL, locks the product rows so two buyers cannot take the last item, works out the delivery fee, and saves the order as *Awaiting payment*.
+3. It asks Paystack for a payment page and redirects the customer there. Card details never touch this server.
+4. After payment the server verifies the transaction with Paystack and checks the amount against the order. The signed webhook acts as a backup in case the customer closes the tab.
+5. The order becomes *Paid* and the owner is emailed.
+6. Unpaid orders are cancelled after a hold time and their stock is released automatically.
+
+## Security and reliability decisions
+
+- Prices, totals and delivery fees are calculated on the server, never trusted from the browser
+- Passwords hashed with bcrypt, sessions in an httpOnly, SameSite, Secure cookie holding a signed JWT
+- Origin check on all state-changing API requests, plus rate limiting and Helmet security headers
+- Paystack webhook signature verified, and every payment amount is compared with the order
+- Stock changes happen inside database transactions with row locks to prevent overselling
+- Secrets live only in environment variables and are never committed
+
+## Project structure
 
 ```
 arede/
-  database/   schema.sql, seed.sql (sample products with fake prices)
-  server/     Express API (auth, products, orders, admin, image upload)
-  client/     React app, one folder per kind of component
+  client/     React app (pages, components, context, API helpers)
+  server/     Express API (routes, services, middleware, scripts)
+  database/   schema.sql and seed.sql
 ```
 
-## 1. Set up the database
+## Run it locally
 
-You need Node 18+ and a running MySQL server.
+You need Node 20+ and a running MySQL server.
 
 ```bash
+# 1. Database and API
 cd server
-cp .env.example .env      # then edit: DB_USER, DB_PASSWORD, JWT_SECRET, ADMIN_EMAIL, ADMIN_PASSWORD
+cp .env.example .env       # fill in the database details, JWT_SECRET and an admin email and password
 npm install
-npm run db:setup          # creates the database, tables, sample products and your admin account
+npm run db:setup           # creates the tables, sample products and the admin account
+npm run dev                # API on http://localhost:5001
+
+# 2. Front end (second terminal)
+cd client
+npm install
+npm run dev                # site on http://localhost:5173
 ```
 
-`db:setup` is safe to run again, it never deletes data. (`npm run db:reset` wipes everything, development only.)
+Log in with the admin details from your `.env`, then open `/admin`. To test payments, put a Paystack **test** secret key in `PAYSTACK_SECRET_KEY`.
 
-Prefer to do it by hand? Create a database, then run `database/schema.sql` and `database/seed.sql`.
+## Deployment
 
-## 2. Run it locally
+The repo deploys as one service. From the root, `npm run build` builds the React app and installs the server, and `npm start` serves everything. Set the variables from `server/.env.example`, with `NODE_ENV=production`, a long random `JWT_SECRET` and `CLIENT_ORIGIN` set to the site address. Uploaded photos need a persistent disk.
 
-Two terminals:
+## Author
 
-```bash
-cd server && npm run dev      # API on http://localhost:5001
-cd client && npm install && npm run dev   # site on http://localhost:5173
-```
-
-Log in at `/login` with the admin email and password from your `.env`, then open `/admin`.
-
-## 3. Put in your real products, prices and photos
-
-**Many products at once (recommended for 30+):**
-
-1. In Excel or Google Sheets, copy the columns of `server/import/products-template.csv`:
-   `name, category, price, stock, description, image, featured, old_price` (the last is optional, leave it empty because nothing is on sale).
-2. Fill one row per product. `stock` is required (use 0 if sold out). `featured` is `yes` for the few you want on the home page.
-3. Put the photos in `server/import/images/` and write each file name in the `image` column (for example `kettle.jpg`).
-4. Export as **CSV UTF-8** and save it as `server/import/products.csv`.
-5. From the `server` folder:
-   - `npm run import -- --check` shows every mistake without changing anything.
-   - `npm run import -- --replace` deletes the sample products and loads yours (it asks you to type YES).
-   - Later, `npm run import` updates products by name and adds new ones.
-
-**One at a time:** Admin > Products > Add product, or Edit.
-
-Products with no photo show a gold line-drawing placeholder on a green background.
-Categories are created from your sheet, and the menus follow them automatically.
-
-Other things to personalise (all in `client/src/config.js`):
-
-| What | Where |
-| --- | --- |
-| Address, phone, WhatsApp, Instagram, TikTok, opening hours | `store` object |
-| Real logo image | put the file in `client/public`, then set `logoSrc: '/logo.png'` |
-| Home page hero photo | put the file in `client/public`, then set `heroImage: '/hero.jpg'` |
-
-Delivery costs a flat fee on every delivered order, whatever its size (pickup is free). Set it with `DELIVERY_FEE` in `server/.env` (default 3500).
-
-## 4. Paystack (online payment)
-
-Every order is paid up front through Paystack, for both delivery and pickup.
-
-1. Create a Paystack account and copy the **test** secret key (Settings > API Keys & Webhooks).
-2. Put it in `server/.env` as `PAYSTACK_SECRET_KEY=sk_test_...` and restart the server.
-3. Place an order and pay with Paystack's test cards. You return to the site and the order shows as paid.
-4. To go live: finish Paystack's business verification, switch to the live key (`sk_live_...`), set `PUBLIC_URL` to your real domain, and in the Paystack dashboard set the **Webhook URL** to `https://yourdomain.com/api/payments/webhook`.
-
-Safety built in: the server re-checks every payment with Paystack and compares the amount to the order, so a customer cannot pay less. Unpaid orders are held for `UNPAID_HOLD_MINUTES` (30) and then cancelled and returned to stock. If a customer pays after the hold expired and the item is gone, the order is flagged **Refund due** in Admin > Orders; refund it from your Paystack dashboard and click **Mark as refunded**.
-
-Updating an older database: run `cd server && npm install && npm run db:migrate` once.
-
-## How ordering works
-
-1. A visitor adds items to the bag, then logs in or registers at checkout.
-2. On **Pay with Paystack** the server re-reads prices and stock from MySQL, reserves the items, saves the order as *Awaiting payment* and sends the customer to Paystack.
-3. After paying, the customer returns to the site, the server confirms the payment with Paystack (the webhook is a backup), and the order becomes *Paid*.
-4. The order page then shows **Send order on WhatsApp**, pre-filled with the items, total and delivery details.
-5. You see it in **Admin > Orders** and move it to Out for delivery or Ready for pickup, then Completed.
-
-## Deploying
-
-- Build the front end with `cd client && npm run build` and host the `client/dist` folder (Netlify, Vercel, or any static host). If the API is on a different domain, build with `VITE_API_URL=https://api.yourdomain.com`.
-- Run the API with `NODE_ENV=production`, a strong `JWT_SECRET`, and `CLIENT_ORIGIN` set to your site's address.
-- Uploaded product photos are saved in `server/uploads`. Many hosts wipe that folder on redeploy, so use a host with a persistent disk, or paste image links from a service like Cloudinary instead.
-- Change the admin password before launch, set `TRUST_PROXY=1` if the API sits behind a proxy, and use the live Paystack key.
-
-## API summary
-
-| Method and path | Access |
-| --- | --- |
-| `POST /api/auth/register`, `POST /api/auth/login`, `GET/PATCH /api/auth/me` | public / logged in |
-| `GET /api/categories`, `GET /api/products`, `GET /api/products/:slug`, `GET /api/settings` | public |
-| `POST /api/orders`, `GET /api/orders`, `GET /api/orders/:orderNumber` | **logged in** |
-| `/api/admin/*` (stats, products CRUD, upload, orders, order status) | admin only |
+**Ayomikunle Daramola**, web developer. [LinkedIn](https://www.linkedin.com/in/ayomikunle-daramola-95b738260/) · [GitHub](https://github.com/kd7-gif)
