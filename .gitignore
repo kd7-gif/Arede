@@ -4,3 +4,5 @@ dist
 server/uploads/*
 !server/uploads/.gitkeep
 dist-demo
+*.zip
+.DS_Store
