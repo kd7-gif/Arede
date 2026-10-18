@@ -14,6 +14,8 @@ import '@fontsource/bodoni-moda/latin-400-italic.css';
 import '@fontsource/bodoni-moda/latin-700-italic.css';
 import './styles/tokens.css';
 import './styles/base.css';
+import { isDemo } from './api/client.js';
+import DemoBanner from './components/layout/DemoBanner.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -21,6 +23,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <ToastProvider>
         <AuthProvider>
           <CartProvider>
+            {isDemo && <DemoBanner />}
             <App />
           </CartProvider>
         </AuthProvider>

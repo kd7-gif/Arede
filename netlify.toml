@@ -1,0 +1,16 @@
+# Free demo hosting on Netlify. The demo build runs the store with sample data, no server or database needed.
+# The real store (React + Express + MySQL) is deployed separately, see README.
+[build]
+  base = "client"
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  VITE_DEMO = "true"
+  NODE_VERSION = "22"
+
+# Single-page app: every path loads index.html and React Router takes over.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

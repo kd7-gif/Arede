@@ -19,7 +19,24 @@ export const setSessionHint = (on) => {
 // Image URLs saved by the admin uploader look like /uploads/abc.jpg and live on the API server.
 export const assetUrl = (u) => (u && u.startsWith('/uploads') ? `${BASE}${u}` : u);
 
+// Demo build (VITE_DEMO=true): answer from the in-browser fake server instead of a real API.
+// When the flag is off this branch is removed at build time, so the real site never includes it.
+const DEMO = import.meta.env.VITE_DEMO === 'true';
+export const isDemo = DEMO;
+
+async function demoApi(path, options) {
+  const { demoRequest } = await import('./demoApi.js');
+  try {
+    return await demoRequest(path, options);
+  } catch (e) {
+    if (!e.demo) throw e;
+    if (e.status === 401 && hasSessionHint()) window.dispatchEvent(new Event('arede:unauthorized'));
+    throw new ApiError(e.message, e.status, e.fields);
+  }
+}
+
 export async function api(path, { method = 'GET', body, form } = {}) {
+  if (DEMO) return demoApi(path, { method, body, form });
   const headers = {};
   if (body) headers['Content-Type'] = 'application/json';
 

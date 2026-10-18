@@ -92,7 +92,18 @@ npm install
 npm run dev                # site on http://localhost:5173
 ```
 
-Log in with the admin details from your `.env`, then open `/admin`. The full setup guide, including bulk product import and going live with Paystack, is in [docs/SETUP.md](docs/SETUP.md). To test payments, put a Paystack **test** secret key in `PAYSTACK_SECRET_KEY`.
+Log in with the admin details from your `.env`, then open `/admin`. To test payments, put a Paystack **test** secret key in `PAYSTACK_SECRET_KEY`.
+
+## Free demo build
+
+The full store needs a server and a database, which cost money to keep running. So the same React code can also be built as a **demo**: set `VITE_DEMO=true` and the front end answers its own API calls from a small fake server inside the browser (`client/src/api/demoApi.js`). It uses the real product catalogue, delivery pricing, stock rules and order statuses, and keeps changes in the visitor's own browser. Payments are simulated and nothing is sent anywhere.
+
+```bash
+cd client
+VITE_DEMO=true npm run build     # static site in client/dist, host it anywhere (Netlify config included)
+```
+
+In the demo you can sign in as `admin@arede.demo` / `demo1234` to use the admin panel, or `customer@arede.demo` / `demo1234` to shop. A normal build (without the flag) contains none of the demo code.
 
 ## Deployment
 
