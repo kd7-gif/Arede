@@ -2,7 +2,7 @@
 
 A full-stack online store for a home and kitchen appliances business in Ibadan, Nigeria. Customers browse products, create accounts, pay through Paystack and track their orders. The owner runs everything from a built-in admin panel.
 
-**Live demo:** [arede-production.up.railway.app](https://arede-production.up.railway.app)
+**Live demo:** [arede-store-demo.netlify.app](https://arede-store-demo.netlify.app) (sample data, simulated payments; admin login `admin@arede.demo` / `demo1234`)
 
 Built end to end by me: design, front end, API, database, payments, deployment and domain setup.
 
