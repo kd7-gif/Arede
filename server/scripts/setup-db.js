@@ -32,7 +32,9 @@ try {
   console.log('Tables ready.');
 
   const [[{ n }]] = await server.query('SELECT COUNT(*) AS n FROM categories');
-  if (n === 0) {
+  if (n === 0 && process.env.SKIP_SAMPLE_DATA === 'true') {
+    console.log('Skipping sample products (SKIP_SAMPLE_DATA=true).');
+  } else if (n === 0) {
     await server.query(fs.readFileSync(path.join(dbDir, 'seed.sql'), 'utf8'));
     console.log('Sample categories and products loaded (placeholder prices).');
   } else {

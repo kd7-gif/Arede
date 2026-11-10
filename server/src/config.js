@@ -23,6 +23,8 @@ export const config = {
     user: process.env.DB_USER || process.env.MYSQLUSER || 'root',
     password: process.env.DB_PASSWORD ?? process.env.MYSQLPASSWORD ?? '',
     database: process.env.DB_NAME || process.env.MYSQLDATABASE || 'arede',
+    // Hosted databases such as TiDB Cloud only accept encrypted connections. Set DB_SSL=true for them.
+    ...(process.env.DB_SSL === 'true' ? { ssl: { minVersion: 'TLSv1.2', rejectUnauthorized: true } } : {}),
   },
   // Customers can only check out once a live Paystack key is in place (or PAYMENTS_OPEN=true).
   // Until then the checkout shows "payments coming soon". Admin accounts can still test.

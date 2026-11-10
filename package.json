@@ -4,9 +4,12 @@
   "private": true,
   "description": "Arede online store: one command builds the website and installs the server",
   "scripts": {
-    "build": "npm --prefix client ci && npm --prefix client run build && npm --prefix server ci --omit=dev",
+    "build": "npm --prefix client ci --include=dev && npm --prefix client run build && npm --prefix server ci --omit=dev",
     "start": "npm --prefix server start",
-    "setup-db": "npm --prefix server run db:setup"
+    "setup-db": "npm --prefix server run db:setup",
+    "render-build": "npm run build && npm --prefix server run db:setup && npm --prefix server run import"
   },
-  "engines": { "node": ">=20.19" }
+  "engines": {
+    "node": ">=20.19"
+  }
 }

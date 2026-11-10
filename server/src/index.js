@@ -67,6 +67,10 @@ app.use('/api', (req, _res, next) => {
 
 app.use(express.json({ limit: '200kb' }));
 app.use('/uploads', express.static(uploadDir, { maxAge: '7d' }));
+// Catalogue photos kept in the repo (server/import/images). Used on hosts without a permanent disk,
+// where anything saved to /uploads is wiped on restart.
+export const catalogImagesDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../import/images');
+app.use('/catalog-images', express.static(catalogImagesDir, { maxAge: '7d' }));
 
 app.get('/api/health', async (_req, res) => {
   await pool.query('SELECT 1');
@@ -87,7 +91,7 @@ const siteDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.
 if (fs.existsSync(path.join(siteDir, 'index.html'))) {
   app.use(express.static(siteDir, { index: false, maxAge: '1h' }));
   app.get('*', (req, res, next) =>
-    req.path.startsWith('/api') || req.path.startsWith('/uploads')
+    req.path.startsWith('/api') || req.path.startsWith('/uploads') || req.path.startsWith('/catalog-images')
       ? next()
       : res.sendFile(path.join(siteDir, 'index.html')));
 }

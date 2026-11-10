@@ -104,6 +104,12 @@ async function resolveImage(image) {
   if (/^https?:\/\//i.test(image)) return image;
   if (imageCache.has(image)) return imageCache.get(image);
   const f = path.join(imagesDir, path.basename(image));
+  // On hosts without a permanent disk (Render free), link to the photo in the repo instead of copying it.
+  if (process.env.CATALOG_IMAGES_FROM_REPO === 'true') {
+    const repoUrl = `/catalog-images/${encodeURIComponent(path.basename(image))}`;
+    imageCache.set(image, repoUrl);
+    return repoUrl;
+  }
   const url = await saveProductImage(fs.readFileSync(f), EXT_TO_TYPE[path.extname(f).toLowerCase()]);
   imageCache.set(image, url);
   return url;
